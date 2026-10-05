@@ -1,19 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-// Landing composta no App.vue (uma seção por componente).
-// A rota "/" existe para o router; a navegação interna usa âncoras.
+const HomeView = { render: () => null }
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
       name: 'home',
-      component: { render: () => null },
+      component: HomeView,
+    },
+    {
+      path: '/pastorais',
+      name: 'pastorais',
+      redirect: '/#pastorais',
     },
   ],
   scrollBehavior(to) {
     if (to.hash) {
-      return { el: to.hash, behavior: 'smooth' }
+      return { el: to.hash, behavior: 'smooth', top: 72 }
     }
     return { top: 0 }
   },
