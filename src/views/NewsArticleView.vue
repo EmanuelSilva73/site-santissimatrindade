@@ -13,10 +13,6 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
     <div class="container">
       <template v-if="article">
         <div class="article-top">
-          <RouterLink class="back-link text-link" to="/noticias">
-            ← Voltar para todas as notícias
-          </RouterLink>
-
           <nav class="breadcrumb" aria-label="Navegação estrutural">
             <RouterLink to="/">Início</RouterLink>
             <span aria-hidden="true">/</span>
@@ -24,21 +20,30 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
             <span aria-hidden="true">/</span>
             <span>{{ article.title }}</span>
           </nav>
+
+          <v-btn
+            class="btn-outline back-btn"
+            variant="outlined"
+            :to="'/noticias'"
+            prepend-icon="mdi-arrow-left"
+          >
+            Voltar
+          </v-btn>
         </div>
 
         <div class="article-layout">
           <article class="article-main">
             <header class="article-header">
+              <span class="article-cat">{{ article.category }}</span>
+              <h1 class="article-title">{{ article.title }}</h1>
               <div class="article-meta">
-                <span class="article-cat">{{ article.category }}</span>
                 <time class="article-date">
                   {{ article.date }} · {{ article.time }}
                 </time>
+                <p class="article-byline">
+                  Publicado por <strong>{{ article.author }}</strong>
+                </p>
               </div>
-              <h1 class="article-title">{{ article.title }}</h1>
-              <p class="article-byline">
-                Publicado por <strong>{{ article.author }}</strong>
-              </p>
               <p class="article-excerpt">{{ article.excerpt }}</p>
             </header>
 
@@ -81,9 +86,22 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
 
       <template v-else>
         <div class="article-top">
-          <RouterLink class="back-link text-link" to="/noticias">
-            ← Voltar para todas as notícias
-          </RouterLink>
+          <nav class="breadcrumb" aria-label="Navegação estrutural">
+            <RouterLink to="/">Início</RouterLink>
+            <span aria-hidden="true">/</span>
+            <RouterLink to="/noticias">Notícias</RouterLink>
+            <span aria-hidden="true">/</span>
+            <span>Não encontrada</span>
+          </nav>
+
+          <v-btn
+            class="btn-outline back-btn"
+            variant="outlined"
+            :to="'/noticias'"
+            prepend-icon="mdi-arrow-left"
+          >
+            Voltar
+          </v-btn>
         </div>
         <div class="not-found card-surface">
           <h1 class="section-title">Notícia não encontrada</h1>
@@ -108,14 +126,11 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
 }
 
 .article-top {
-  margin-bottom: 18px;
-}
-
-.back-link {
-  display: inline-flex;
-  align-items: center;
-  margin-bottom: 10px;
-  font-size: 0.95rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 22px;
 }
 
 .breadcrumb {
@@ -140,6 +155,11 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
   outline: none;
 }
 
+.back-btn.v-btn {
+  min-width: 110px;
+  font-weight: 600 !important;
+}
+
 .article-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 300px;
@@ -147,16 +167,9 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
   align-items: start;
 }
 
-.article-meta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
-}
-
 .article-cat {
   display: inline-flex;
+  margin-bottom: 12px;
   padding: 2px 10px;
   border-radius: 999px;
   background: rgba(122, 36, 48, 0.1);
@@ -165,13 +178,8 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
   font-weight: 700;
 }
 
-.article-date {
-  font-size: 0.9rem;
-  color: var(--parish-muted);
-}
-
 .article-title {
-  margin: 0 0 10px;
+  margin: 0 0 14px;
   font-family: var(--font-display);
   font-size: clamp(2rem, 4vw, 2.75rem);
   font-weight: 600;
@@ -179,8 +187,20 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
   line-height: 1.15;
 }
 
+.article-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.article-date {
+  font-size: 0.95rem;
+  color: var(--parish-muted);
+}
+
 .article-byline {
-  margin: 0 0 16px;
+  margin: 0;
   font-size: 0.95rem;
   color: var(--parish-muted);
 }
