@@ -1,7 +1,9 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { navLinks, site } from '../data/site'
 
+const route = useRoute()
 const menuOpen = ref(false)
 const scrolled = ref(false)
 
@@ -21,25 +23,40 @@ onUnmounted(() => {
 function closeMenu() {
   menuOpen.value = false
 }
+
+function isActive(link) {
+  if (link.href === '/noticias') {
+    return route.path.startsWith('/noticias')
+  }
+  if (link.href === '/#inicio' || link.href === '/') {
+    return route.path === '/' && (!route.hash || route.hash === '#inicio')
+  }
+  if (link.href.startsWith('/#')) {
+    return route.path === '/' && route.hash === link.href.slice(1)
+  }
+  return route.path === link.href
+}
+
+const links = computed(() => navLinks)
 </script>
 
 <template>
   <header class="navbar" :class="{ 'navbar--scrolled': scrolled }">
     <div class="container navbar-inner">
-      <a href="#inicio" class="brand" @click="closeMenu">
+      <RouterLink to="/" class="brand" @click="closeMenu">
         <span class="brand-line1">{{ site.logo_line1 }}</span>
         <span class="brand-line2">{{ site.logo_line2 }}</span>
-      </a>
+      </RouterLink>
 
       <nav class="nav-links" aria-label="Navegação principal">
-        <a
-          v-for="link in navLinks"
+        <RouterLink
+          v-for="link in links"
           :key="link.id"
-          :href="link.href"
-          :class="{ 'nav-links__active': link.id === 'inicio' }"
+          :to="link.href"
+          :class="{ 'nav-links__active': isActive(link) }"
         >
           {{ link.label }}
-        </a>
+        </RouterLink>
       </nav>
 
       <button
@@ -56,14 +73,14 @@ function closeMenu() {
 
     <Transition name="menu">
       <nav v-if="menuOpen" class="mobile-menu" aria-label="Navegação principal (mobile)">
-        <a
-          v-for="link in navLinks"
+        <RouterLink
+          v-for="link in links"
           :key="link.id"
-          :href="link.href"
+          :to="link.href"
           @click="closeMenu"
         >
           {{ link.label }}
-        </a>
+        </RouterLink>
       </nav>
     </Transition>
   </header>

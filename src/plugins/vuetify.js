@@ -27,6 +27,7 @@ import {
   VImg,
   VForm,
   VFadeTransition,
+  VPagination,
 } from 'vuetify/components'
 
 import { createVuetify } from 'vuetify'
@@ -59,6 +60,7 @@ const vuetify = createVuetify({
     VImg,
     VForm,
     VFadeTransition,
+    VPagination,
   },
   icons: {
     defaultSet: 'mdi',

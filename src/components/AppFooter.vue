@@ -20,7 +20,8 @@ import { site, footer, contact } from '../data/site'
         <h3 class="footer-col__title">{{ col.title }}</h3>
         <ul>
           <li v-for="link in col.links" :key="link.label">
-            <a :href="link.href">{{ link.label }}</a>
+            <RouterLink v-if="link.href.startsWith('/')" :to="link.href">{{ link.label }}</RouterLink>
+            <a v-else :href="link.href">{{ link.label }}</a>
           </li>
         </ul>
       </div>
