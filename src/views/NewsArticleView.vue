@@ -64,20 +64,35 @@ async function shareArticle() {
         </div>
 
         <header class="article-header">
-          <h1 class="article-title">{{ article.title }}</h1>
-          <p class="article-excerpt">{{ article.excerpt }}</p>
-          <p class="article-meta">
-            <time>{{ article.time }} · {{ article.date }}</time>
-            <span aria-hidden="true"> · </span>
-            <span>Por {{ article.author }}</span>
-          </p>
-          <nav class="breadcrumb" aria-label="Navegação estrutural">
-            <RouterLink to="/">Início</RouterLink>
-            <span aria-hidden="true">/</span>
-            <RouterLink to="/noticias">Notícias</RouterLink>
-            <span aria-hidden="true">/</span>
-            <span>{{ article.title }}</span>
-          </nav>
+          <div class="article-header__copy">
+            <h1 class="article-title">{{ article.title }}</h1>
+            <p class="article-excerpt">{{ article.excerpt }}</p>
+            <p class="article-meta">
+              <time>{{ article.time }} · {{ article.date }}</time>
+              <span aria-hidden="true"> · </span>
+              <span>Por {{ article.author }}</span>
+            </p>
+            <nav class="breadcrumb" aria-label="Navegação estrutural">
+              <RouterLink to="/">Início</RouterLink>
+              <span aria-hidden="true">/</span>
+              <RouterLink to="/noticias">Notícias</RouterLink>
+              <span aria-hidden="true">/</span>
+              <span>{{ article.title }}</span>
+            </nav>
+          </div>
+
+          <div
+            class="header-hero"
+            role="img"
+            aria-label="Ilustração padrão de notícia"
+          >
+            <v-icon
+              icon="mdi-newspaper-variant-outline"
+              size="108"
+              class="header-hero__icon"
+              aria-hidden="true"
+            />
+          </div>
         </header>
 
         <div class="article-layout">
@@ -98,18 +113,6 @@ async function shareArticle() {
           </article>
 
           <aside class="article-sidebar" aria-label="Notícias Recentes">
-            <div
-              class="sidebar-hero"
-              role="img"
-              aria-label="Ilustração padrão de notícia"
-            >
-              <v-icon
-                icon="mdi-newspaper-variant-outline"
-                size="108"
-                class="sidebar-hero__icon"
-                aria-hidden="true"
-              />
-            </div>
             <div class="sidebar-card card-surface">
               <h2 class="sidebar-title">Notícias Recentes:</h2>
               <ul class="sidebar-list">
@@ -195,8 +198,15 @@ async function shareArticle() {
 }
 
 .article-header {
-  max-width: calc(100% - 300px);
-  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 24px 28px;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.article-header__copy {
+  min-width: 0;
 }
 
 .article-title {
@@ -238,11 +248,27 @@ async function shareArticle() {
 }
 
 .article-excerpt {
-  margin-top: 10px;
-  margin: 0;
+  margin: 0 0 12px;
   font-size: 1.15rem;
   line-height: 1.55;
   color: var(--parish-muted);
+}
+
+.header-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #f3ebe0 0%, #e8dcc8 55%, #ddcfb6 100%);
+  box-shadow: inset 0 0 0 1px rgba(27, 42, 74, 0.06);
+  flex-shrink: 0;
+}
+
+.header-hero__icon {
+  color: var(--parish-navy) !important;
+  opacity: 0.85;
 }
 
 .article-layout {
@@ -264,24 +290,6 @@ async function shareArticle() {
   font-size: 1.05rem;
   line-height: 1.7;
   color: var(--parish-ink);
-}
-
-.sidebar-hero {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 148px;
-  height: 148px;
-  margin: 0 0 18px;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #f3ebe0 0%, #e8dcc8 55%, #ddcfb6 100%);
-  box-shadow: inset 0 0 0 1px rgba(27, 42, 74, 0.06);
-  flex-shrink: 0;
-}
-
-.sidebar-hero__icon {
-  color: var(--parish-navy) !important;
-  opacity: 0.85;
 }
 
 .article-sidebar {
@@ -371,7 +379,14 @@ async function shareArticle() {
 
 @media (max-width: 960px) {
   .article-header {
-    max-width: none;
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .header-hero {
+    width: 132px;
+    height: 132px;
+    order: -1;
   }
 
   .article-layout {
@@ -381,12 +396,6 @@ async function shareArticle() {
 
   .article-sidebar {
     position: static;
-  }
-
-  .sidebar-hero {
-    width: 132px;
-    height: 132px;
-    margin-bottom: 16px;
   }
 }
 </style>
