@@ -31,22 +31,21 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
           </v-btn>
         </div>
 
+        <header class="article-header">
+          <h1 class="article-title">{{ article.title }}</h1>
+          <div class="article-meta">
+            <time class="article-date">
+              {{ article.date }} · {{ article.time }}
+            </time>
+            <p class="article-byline">
+              Publicado por <strong>{{ article.author }}</strong>
+            </p>
+          </div>
+          <p class="article-excerpt">{{ article.excerpt }}</p>
+        </header>
+
         <div class="article-layout">
           <article class="article-main">
-            <header class="article-header">
-              <span class="article-cat">{{ article.category }}</span>
-              <h1 class="article-title">{{ article.title }}</h1>
-              <div class="article-meta">
-                <time class="article-date">
-                  {{ article.date }} · {{ article.time }}
-                </time>
-                <p class="article-byline">
-                  Publicado por <strong>{{ article.author }}</strong>
-                </p>
-              </div>
-              <p class="article-excerpt">{{ article.excerpt }}</p>
-            </header>
-
             <div
               class="article-photo photo-placeholder"
               role="img"
@@ -66,7 +65,11 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
             <div class="sidebar-card card-surface">
               <h2 class="sidebar-title">Notícias recentes</h2>
               <ul class="sidebar-list">
-                <li v-for="item in recent" :key="item.id">
+                <li
+                  v-for="item in recent"
+                  :key="item.id"
+                  class="sidebar-list__item"
+                >
                   <RouterLink :to="`/noticias/${item.slug}`" class="sidebar-item">
                     <span class="sidebar-item__cat">{{ item.category }}</span>
                     <span class="sidebar-item__title">{{ item.title }}</span>
@@ -160,22 +163,9 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
   font-weight: 600 !important;
 }
 
-.article-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
-  gap: 32px;
-  align-items: start;
-}
-
-.article-cat {
-  display: inline-flex;
-  margin-bottom: 12px;
-  padding: 2px 10px;
-  border-radius: 999px;
-  background: rgba(122, 36, 48, 0.1);
-  color: var(--parish-maroon);
-  font-size: 0.75rem;
-  font-weight: 700;
+.article-header {
+  max-width: calc(100% - 332px);
+  margin-bottom: 28px;
 }
 
 .article-title {
@@ -211,10 +201,17 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
 }
 
 .article-excerpt {
-  margin: 0 0 24px;
+  margin: 0;
   font-size: 1.15rem;
   line-height: 1.55;
   color: var(--parish-muted);
+}
+
+.article-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 32px;
+  align-items: start;
 }
 
 .article-photo {
@@ -238,7 +235,7 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
 }
 
 .sidebar-title {
-  margin: 0 0 16px;
+  margin: 0 0 8px;
   font-family: var(--font-display);
   font-size: 1.35rem;
   font-weight: 600;
@@ -251,18 +248,25 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+}
+
+.sidebar-list__item {
+  border-bottom: 1px solid rgba(27, 42, 74, 0.1);
+}
+
+.sidebar-list__item:last-child {
+  border-bottom: 0;
 }
 
 .sidebar-item {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 12px 8px;
-  border-radius: 12px;
+  padding: 14px 4px;
   text-decoration: none;
   color: inherit;
   transition: background 0.15s ease;
+  border-radius: 8px;
 }
 
 .sidebar-item:hover,
@@ -307,6 +311,10 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
 }
 
 @media (max-width: 960px) {
+  .article-header {
+    max-width: none;
+  }
+
   .article-layout {
     grid-template-columns: 1fr;
     gap: 28px;
