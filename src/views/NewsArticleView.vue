@@ -98,6 +98,18 @@ async function shareArticle() {
           </article>
 
           <aside class="article-sidebar" aria-label="Notícias recentes">
+            <div
+              class="sidebar-hero"
+              role="img"
+              aria-label="Ilustração padrão de notícia"
+            >
+              <v-icon
+                icon="mdi-newspaper-variant-outline"
+                size="88"
+                class="sidebar-hero__icon"
+                aria-hidden="true"
+              />
+            </div>
             <div class="sidebar-card card-surface">
               <h2 class="sidebar-title">Notícias recentes</h2>
               <ul class="sidebar-list">
@@ -254,10 +266,31 @@ async function shareArticle() {
   color: var(--parish-ink);
 }
 
-.sidebar-card {
-  padding: 22px 20px;
+.sidebar-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 300px;
+  margin: 0 auto 24px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #f3ebe0 0%, #e8dcc8 55%, #ddcfb6 100%);
+  box-shadow: inset 0 0 0 1px rgba(27, 42, 74, 0.06);
+}
+
+.sidebar-hero__icon {
+  color: var(--parish-navy) !important;
+  opacity: 0.72;
+}
+
+.article-sidebar {
   position: sticky;
   top: calc(var(--navbar-height) + 16px);
+}
+
+.sidebar-card {
+  padding: 22px 20px;
 }
 
 .sidebar-title {
@@ -346,8 +379,13 @@ async function shareArticle() {
     gap: 28px;
   }
 
-  .sidebar-card {
+  .article-sidebar {
     position: static;
+  }
+
+  .sidebar-hero {
+    max-width: 220px;
+    margin-bottom: 20px;
   }
 }
 </style>
