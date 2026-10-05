@@ -1,0 +1,89 @@
+:root {
+  --parish-navy: #1b2a4a;
+  --parish-gold: #c9a84c;
+  --parish-blue: #3d5a80;
+  --parish-cream: #faf8f4;
+  --parish-ink: #1a1a1a;
+  --parish-muted: #5c6570;
+  --navbar-height: 72px;
+  --container-max: 1120px;
+  --section-pad: 88px;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Source Sans 3', system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--parish-ink);
+  background: var(--parish-cream);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
+
+.container {
+  width: min(100% - 48px, var(--container-max));
+  margin-inline: auto;
+}
+
+.section {
+  padding-block: var(--section-pad);
+}
+
+.section-title {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 600;
+  color: var(--parish-navy);
+  letter-spacing: 0.01em;
+}
+
+.section-lead {
+  margin: 0 0 40px;
+  max-width: 560px;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--parish-muted);
+}
+
+.btn.v-btn {
+  text-transform: none;
+  letter-spacing: 0.01em;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.btn--primary.v-btn {
+  background: var(--parish-gold) !important;
+  color: var(--parish-navy) !important;
+}
+
+.btn--outline.v-btn {
+  border: 1.5px solid rgba(255, 255, 255, 0.7) !important;
+  color: #ffffff !important;
+  background: transparent !important;
+}
+
+@media (max-width: 800px) {
+  :root {
+    --section-pad: 64px;
+  }
+
+  .container {
+    width: min(100% - 32px, var(--container-max));
+  }
+}
