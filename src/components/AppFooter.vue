@@ -1,13 +1,13 @@
 <script setup>
 import { site, footer, contact } from '../data/site'
+import AppLogo from './AppLogo.vue'
 </script>
 
 <template>
   <footer class="footer">
     <div class="container footer-inner">
       <div class="footer-brand">
-        <p class="footer-brand__line1">{{ site.logo_line1 }}</p>
-        <p class="footer-brand__line2">{{ site.logo_line2 }}</p>
+        <AppLogo size="footer" />
         <p class="footer-brand__meta">{{ site.archdiocese }}</p>
         <p class="footer-brand__meta">{{ site.forania }}</p>
       </div>
@@ -68,24 +68,9 @@ import { site, footer, contact } from '../data/site'
   gap: 28px;
 }
 
-.footer-brand__line1 {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 0.9rem;
-  color: var(--parish-gold);
-}
-
-.footer-brand__line2 {
-  margin: 0 0 12px;
-  font-family: var(--font-display);
-  font-size: 1.55rem;
-  font-weight: 600;
-  color: var(--parish-navy);
-  line-height: 1.15;
-}
 
 .footer-brand__meta {
-  margin: 0;
+  margin: 10px 0 0;
   font-size: 0.9rem;
   color: var(--parish-muted);
   line-height: 1.45;

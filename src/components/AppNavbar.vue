@@ -1,7 +1,8 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { navLinks, site } from '../data/site'
+import { navLinks } from '../data/site'
+import AppLogo from './AppLogo.vue'
 
 const route = useRoute()
 const menuOpen = ref(false)
@@ -43,10 +44,7 @@ const links = computed(() => navLinks)
 <template>
   <header class="navbar" :class="{ 'navbar--scrolled': scrolled }">
     <div class="container navbar-inner">
-      <RouterLink to="/" class="brand" @click="closeMenu">
-        <span class="brand-line1">{{ site.logo_line1 }}</span>
-        <span class="brand-line2">{{ site.logo_line2 }}</span>
-      </RouterLink>
+      <AppLogo size="nav" @click="closeMenu" />
 
       <nav class="nav-links" aria-label="Navegação principal">
         <RouterLink
@@ -110,28 +108,6 @@ const links = computed(() => navLinks)
   gap: 24px;
 }
 
-.brand {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-  text-decoration: none;
-  flex-shrink: 0;
-}
-
-.brand-line1 {
-  font-family: var(--font-display);
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--parish-gold);
-  letter-spacing: 0.02em;
-}
-
-.brand-line2 {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 600;
-  color: var(--parish-navy);
-}
 
 .nav-links {
   display: flex;
