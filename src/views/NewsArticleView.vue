@@ -97,7 +97,7 @@ async function shareArticle() {
             </div>
           </article>
 
-          <aside class="article-sidebar" aria-label="Notícias recentes">
+          <aside class="article-sidebar" aria-label="Notícias Recentes">
             <div
               class="sidebar-hero"
               role="img"
@@ -111,7 +111,7 @@ async function shareArticle() {
               />
             </div>
             <div class="sidebar-card card-surface">
-              <h2 class="sidebar-title">Notícias recentes</h2>
+              <h2 class="sidebar-title">Notícias Recentes:</h2>
               <ul class="sidebar-list">
                 <li
                   v-for="item in recent"
