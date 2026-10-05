@@ -34,11 +34,11 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
         <header class="article-header">
           <h1 class="article-title">{{ article.title }}</h1>
           <div class="article-meta">
-            <time class="article-date">
-              {{ article.date }} · {{ article.time }}
-            </time>
+            <time class="article-time">{{ article.time }}</time>
             <p class="article-byline">
               Publicado por <strong>{{ article.author }}</strong>
+              <span class="article-meta-sep" aria-hidden="true">·</span>
+              <time class="article-date">{{ article.date }}</time>
             </p>
           </div>
           <p class="article-excerpt">{{ article.excerpt }}</p>
@@ -184,13 +184,28 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
   margin-bottom: 16px;
 }
 
+.article-time {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--parish-navy);
+}
+
 .article-date {
   font-size: 0.95rem;
   color: var(--parish-muted);
 }
 
+.article-meta-sep {
+  margin: 0 6px;
+  color: var(--parish-muted);
+}
+
 .article-byline {
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0;
   font-size: 0.95rem;
   color: var(--parish-muted);
 }

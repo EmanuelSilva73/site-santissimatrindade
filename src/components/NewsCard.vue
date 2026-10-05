@@ -16,14 +16,14 @@ defineProps({
     <div class="news-card__body">
       <div class="news-card__meta">
         <span class="news-card__cat">{{ item.category }}</span>
-        <time class="news-card__date">{{ item.date }} · {{ item.time }}</time>
+        <time class="news-card__date">{{ item.time }}</time>
       </div>
       <h3 class="news-card__title">
         <RouterLink :to="`/noticias/${item.slug}`" class="news-card__title-link">
           {{ item.title }}
         </RouterLink>
       </h3>
-      <p class="news-card__author">Por {{ item.author }}</p>
+      <p class="news-card__author">Por {{ item.author }} · {{ item.date }}</p>
       <p class="news-card__excerpt">{{ item.excerpt }}</p>
       <RouterLink class="text-link" :to="`/noticias/${item.slug}`">
         Ler notícia
