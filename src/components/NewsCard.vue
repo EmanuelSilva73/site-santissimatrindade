@@ -16,13 +16,14 @@ defineProps({
     <div class="news-card__body">
       <div class="news-card__meta">
         <span class="news-card__cat">{{ item.category }}</span>
-        <time class="news-card__date">{{ item.date }}</time>
+        <time class="news-card__date">{{ item.date }} · {{ item.time }}</time>
       </div>
       <h3 class="news-card__title">
         <RouterLink :to="`/noticias/${item.slug}`" class="news-card__title-link">
           {{ item.title }}
         </RouterLink>
       </h3>
+      <p class="news-card__author">Por {{ item.author }}</p>
       <p class="news-card__excerpt">{{ item.excerpt }}</p>
       <RouterLink class="text-link" :to="`/noticias/${item.slug}`">
         Ler notícia
@@ -47,7 +48,7 @@ defineProps({
 .news-card__body {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   padding: 18px 18px 20px;
   flex: 1;
 }
@@ -92,6 +93,13 @@ defineProps({
 .news-card__title-link:focus-visible {
   color: var(--parish-maroon);
   outline: none;
+}
+
+.news-card__author {
+  margin: 0;
+  font-size: 0.82rem;
+  color: var(--parish-gold);
+  font-weight: 600;
 }
 
 .news-card__excerpt {

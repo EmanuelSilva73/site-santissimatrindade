@@ -37,7 +37,7 @@ function onPageChange(p) {
 </script>
 
 <template>
-  <section class="section news-list">
+  <section class="news-list">
     <div class="container">
       <nav class="breadcrumb" aria-label="Navegação estrutural">
         <RouterLink to="/">Início</RouterLink>
@@ -81,13 +81,14 @@ function onPageChange(p) {
 .news-list {
   background: var(--parish-cream);
   min-height: 60vh;
+  padding: 20px 0 56px;
 }
 
 .breadcrumb {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 20px;
+  margin: 0 0 14px;
   font-size: 0.9rem;
   color: var(--parish-muted);
 }
@@ -105,7 +106,15 @@ function onPageChange(p) {
 }
 
 .news-list__header {
-  margin-bottom: 36px;
+  margin-bottom: 28px;
+}
+
+.news-list__header .section-title {
+  margin-bottom: 8px;
+}
+
+.news-list__header .section-lead {
+  margin-bottom: 0;
 }
 
 .news-list__pager {
