@@ -98,7 +98,7 @@ const vuetify = createVuetify({
       paroquia: {
         dark: false,
         colors: {
-          background: '#F9F7F2',
+          background: '#FFFFFF',
           surface: '#FFFFFF',
           primary: '#1B2A4A',
           'on-primary': '#FFFFFF',
@@ -107,7 +107,7 @@ const vuetify = createVuetify({
           maroon: '#7A2430',
           'on-maroon': '#FFFFFF',
           gold: '#B08A55',
-          cream: '#F9F7F2',
+          cream: '#FFFFFF',
           ink: '#1A1A1A',
           muted: '#5C6570',
           accent: '#7A2430',

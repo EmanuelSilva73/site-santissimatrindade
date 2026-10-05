@@ -79,7 +79,7 @@ function onPageChange(p) {
 
 <style scoped>
 .news-list {
-  background: var(--parish-cream);
+  background: #ffffff;
   min-height: 60vh;
   padding: 20px 0 56px;
 }

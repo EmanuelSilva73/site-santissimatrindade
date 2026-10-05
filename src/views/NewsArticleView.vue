@@ -105,7 +105,7 @@ async function shareArticle() {
             >
               <v-icon
                 icon="mdi-newspaper-variant-outline"
-                size="88"
+                size="108"
                 class="sidebar-hero__icon"
                 aria-hidden="true"
               />
@@ -167,7 +167,7 @@ async function shareArticle() {
 
 <style scoped>
 .article-page {
-  background: var(--parish-cream);
+  background: #ffffff;
   min-height: 60vh;
   padding: 20px 0 56px;
 }
@@ -195,8 +195,8 @@ async function shareArticle() {
 }
 
 .article-header {
-  max-width: calc(100% - 332px);
-  margin-bottom: 28px;
+  max-width: calc(100% - 300px);
+  margin-bottom: 20px;
 }
 
 .article-title {
@@ -220,7 +220,7 @@ async function shareArticle() {
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 0 0 18px;
+  margin: 0;
   font-size: 0.9rem;
   color: var(--parish-muted);
 }
@@ -247,8 +247,8 @@ async function shareArticle() {
 
 .article-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
-  gap: 32px;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 20px;
   align-items: start;
 }
 
@@ -256,7 +256,7 @@ async function shareArticle() {
   width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 18px;
-  margin-bottom: 28px;
+  margin: 0 0 28px;
 }
 
 .article-body p {
@@ -270,18 +270,18 @@ async function shareArticle() {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  aspect-ratio: 1;
-  max-width: 300px;
-  margin: 0 auto 24px;
+  width: 148px;
+  height: 148px;
+  margin: 0 0 18px;
   border-radius: 50%;
   background: linear-gradient(145deg, #f3ebe0 0%, #e8dcc8 55%, #ddcfb6 100%);
   box-shadow: inset 0 0 0 1px rgba(27, 42, 74, 0.06);
+  flex-shrink: 0;
 }
 
 .sidebar-hero__icon {
   color: var(--parish-navy) !important;
-  opacity: 0.72;
+  opacity: 0.85;
 }
 
 .article-sidebar {
@@ -384,8 +384,9 @@ async function shareArticle() {
   }
 
   .sidebar-hero {
-    max-width: 220px;
-    margin-bottom: 20px;
+    width: 132px;
+    height: 132px;
+    margin-bottom: 16px;
   }
 }
 </style>
