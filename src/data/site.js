@@ -20,7 +20,7 @@ export const site = {
 
 export const navLinks = [
   { id: 'inicio', label: 'Início', href: '/#inicio' },
-  { id: 'a-paroquia', label: 'A paróquia', href: '/#a-paroquia' },
+  { id: 'a-paroquia', label: 'A Paróquia', href: '/#a-paroquia' },
   { id: 'horarios', label: 'Horários', href: '/#horarios' },
   { id: 'sacramentos', label: 'Sacramentos', href: '/#sacramentos' },
   { id: 'noticias', label: 'Notícias', href: '/noticias' },
@@ -39,7 +39,7 @@ export const heroCarousel = {
       texto:
         'Uma comunidade de fé no bairro Primavera, zona Norte de Teresina. As portas estão abertas: venha rezar conosco.',
       botao_principal: { label: 'Ver horários de missa', href: '/#horarios' },
-      botao_secundario: { label: 'Como chegar', href: '/#contato' },
+      botao_secundario: { label: 'Como Chegar', href: '/#contato' },
       foto: {
         alt: 'Interior da Igreja Matriz durante a celebração',
         label: 'Foto — interior da Matriz',
@@ -120,7 +120,7 @@ export const heroCarousel = {
 }
 
 export const news = {
-  title: 'Notícias e avisos',
+  title: 'Notícias e Avisos',
   lead: 'O que está acontecendo na paróquia.',
   view_all: { label: 'Ver todas as notícias', to: '/noticias' },
   per_page: 12,
@@ -294,7 +294,7 @@ export const news = {
       date: '05/08/2026',
       time: '10h05',
       author: 'Pastoral do Dízimo',
-      title: 'Liturgia do dia passa a ser publicada no site',
+      title: 'Liturgia do Dia passa a ser publicada no site',
       excerpt: 'Leituras, salmo e evangelho do dia na página inicial.',
       photo_label: 'Foto',
       body: [
@@ -406,7 +406,7 @@ export const news = {
       date: '15/06/2026',
       time: '09h40',
       author: 'Pastoral do Dízimo',
-      title: 'Pedido de oração pela comunidade',
+      title: 'Pedido de Oração pela comunidade',
       excerpt: 'Envie sua intenção pelo site. A comunidade reza nas missas da semana.',
       photo_label: 'Foto',
       body: [
@@ -435,7 +435,7 @@ export function getRecentNews(excludeSlug, limit = 5) {
 
 
 export const dizimo = {
-  title: 'Dízimo e ofertas',
+  title: 'Dízimo e Ofertas',
   text: 'O dízimo sustenta a vida da paróquia: as celebrações, a catequese e o cuidado com quem mais precisa.',
   quote: 'Deus ama quem dá com alegria.',
   quote_ref: '2Cor 9,7',
@@ -446,7 +446,7 @@ export const dizimo = {
 }
 
 export const masses = {
-  title: 'Horários de missa',
+  title: 'Horários de Missa',
   lead: 'Na Igreja Matriz e nas duas comunidades da paróquia.',
   note: 'Em solenidades e festas os horários podem mudar. Na dúvida, ligue para a secretaria: (86) 3305-3327.',
   phone: '(86) 3305-3327',
@@ -461,7 +461,7 @@ export const masses = {
     ],
   },
   communities: {
-    title: 'Nas comunidades',
+    title: 'Nas Comunidades',
     items: [
       {
         name: 'Nossa Senhora da Esperança',
@@ -484,7 +484,7 @@ export const masses = {
 }
 
 export const liturgyToday = {
-  title: 'Liturgia do dia',
+  title: 'Liturgia do Dia',
   date: 'Sexta-feira, 2 de outubro de 2026',
   feast: 'Santos Anjos da Guarda',
   rank: 'Memória, cor litúrgica branca',
@@ -552,7 +552,7 @@ export const sacraments = {
 }
 
 export const celebrations = {
-  title: 'Próximas celebrações',
+  title: 'Próximas Celebrações',
   lead: 'Datas do calendário litúrgico. Os horários especiais saem nas notícias.',
   items: [
     {
@@ -594,20 +594,20 @@ export const celebrations = {
 }
 
 export const history = {
-  title: 'Nossa história',
+  title: 'Nossa História',
   paragraphs: [
     'A Paróquia Santíssima Trindade fica no bairro Primavera, na zona Norte de Teresina, e pertence à Forania Norte I da Arquidiocese de Teresina. Reúne a Igreja Matriz e as comunidades Nossa Senhora da Esperança e Santa Helena.',
     'Foi nesta igreja que começou a Missa da Misericórdia, celebração que reúne milhares de fiéis e hoje é Patrimônio Cultural Imaterial do Piauí.',
   ],
   pastor_label: 'Pároco',
   pastor_name: 'Pe. Antônio Francisco dos Santos Cruz',
-  cta: { label: 'Conheça a nossa história', href: '/#a-paroquia' },
+  cta: { label: 'Conheça a Nossa História', href: '/#a-paroquia' },
   photo_label: 'Foto da fachada da Igreja Matriz',
   photo_alt: 'Fachada da Igreja Matriz da Paróquia Santíssima Trindade',
 }
 
 export const prayerRequest = {
-  title: 'Pedido de oração',
+  title: 'Pedido de Oração',
   lead: 'Escreva sua intenção. A comunidade reza por ela nas missas da semana.',
   name_label: 'Seu nome (opcional)',
   request_label: 'Seu pedido',
@@ -618,7 +618,7 @@ export const prayerRequest = {
 }
 
 export const contact = {
-  title: 'Como chegar',
+  title: 'Como Chegar',
   map_label: 'Mapa do Google',
   map_name: 'Paróquia Santíssima Trindade',
   map_address_short: 'Rua Gov. Artur de Vasconcelos, 2291, Primavera',
@@ -652,7 +652,7 @@ export const contact = {
 }
 
 export const pastorais = {
-  title: 'Pastorais e movimentos',
+  title: 'Pastorais e Movimentos',
   lead: 'A lista real de pastorais e movimentos será confirmada com a secretaria.',
   note: 'Enquanto isso, procure a secretaria para saber como participar.',
 }
@@ -661,10 +661,10 @@ export const footer = {
   columns: [
     {
       id: 'paroquia',
-      title: 'A paróquia',
+      title: 'A Paróquia',
       links: [
-        { label: 'Nossa história', href: '/#a-paroquia' },
-        { label: 'Pastorais e movimentos', href: '/#pastorais' },
+        { label: 'Nossa História', href: '/#a-paroquia' },
+        { label: 'Pastorais e Movimentos', href: '/#pastorais' },
         { label: 'Comunidades', href: '/#contato' },
       ],
     },
@@ -672,19 +672,19 @@ export const footer = {
       id: 'celebracoes',
       title: 'Celebrações',
       links: [
-        { label: 'Horários de missa', href: '/#horarios' },
-        { label: 'Liturgia do dia', href: '/#horarios' },
-        { label: 'Próximas celebrações', href: '/#celebracoes' },
+        { label: 'Horários de Missa', href: '/#horarios' },
+        { label: 'Liturgia do Dia', href: '/#horarios' },
+        { label: 'Próximas Celebrações', href: '/#celebracoes' },
       ],
     },
     {
       id: 'participe',
       title: 'Participe',
       links: [
-        { label: 'Notícias e avisos', href: '/noticias' },
+        { label: 'Notícias e Avisos', href: '/noticias' },
         { label: 'Sacramentos', href: '/#sacramentos' },
         { label: 'Dízimo', href: '/#dizimo' },
-        { label: 'Pedido de oração', href: '/#contato' },
+        { label: 'Pedido de Oração', href: '/#contato' },
       ],
     },
   ],

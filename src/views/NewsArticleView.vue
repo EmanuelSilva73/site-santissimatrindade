@@ -152,7 +152,7 @@ async function shareArticle() {
           </v-btn>
         </div>
         <div class="not-found card-surface">
-          <h1 class="section-title">Notícia não encontrada</h1>
+          <h1 class="section-title">Notícia Não Encontrada</h1>
           <p class="section-lead">
             Não há publicação com o endereço
             <code>/noticias/{{ route.params.slug }}</code>.
