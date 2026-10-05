@@ -33,12 +33,12 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
 
         <header class="article-header">
           <h1 class="article-title">{{ article.title }}</h1>
-          <p class="article-meta">
+                    <p class="article-meta">
             <time class="article-time">{{ article.time }}</time>
             <span class="article-meta-sep" aria-hidden="true">·</span>
-            <span class="article-byline">Publicado por <strong>{{ article.author }}</strong></span>
-            <span class="article-meta-sep" aria-hidden="true">·</span>
             <time class="article-date">{{ article.date }}</time>
+            <span class="article-meta-sep" aria-hidden="true">·</span>
+            <span class="article-byline">Publicado por <strong>{{ article.author }}</strong></span>
           </p>
           <p class="article-excerpt">{{ article.excerpt }}</p>
         </header>
@@ -73,7 +73,7 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
                     <span class="sidebar-item__cat">{{ item.category }}</span>
                     <span class="sidebar-item__title">{{ item.title }}</span>
                     <span class="sidebar-item__meta">
-                      {{ item.date }} · {{ item.time }}
+                      {{ item.time }} · {{ item.date }}
                     </span>
                   </RouterLink>
                 </li>
