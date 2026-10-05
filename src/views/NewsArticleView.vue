@@ -33,14 +33,13 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
 
         <header class="article-header">
           <h1 class="article-title">{{ article.title }}</h1>
-          <div class="article-meta">
+          <p class="article-meta">
             <time class="article-time">{{ article.time }}</time>
-            <p class="article-byline">
-              Publicado por <strong>{{ article.author }}</strong>
-              <span class="article-meta-sep" aria-hidden="true">·</span>
-              <time class="article-date">{{ article.date }}</time>
-            </p>
-          </div>
+            <span class="article-meta-sep" aria-hidden="true">·</span>
+            <span class="article-byline">Publicado por <strong>{{ article.author }}</strong></span>
+            <span class="article-meta-sep" aria-hidden="true">·</span>
+            <time class="article-date">{{ article.date }}</time>
+          </p>
           <p class="article-excerpt">{{ article.excerpt }}</p>
         </header>
 
@@ -179,9 +178,12 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
 
 .article-meta {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-bottom: 16px;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0;
+  margin: 0 0 16px;
+  font-size: 0.95rem;
+  color: var(--parish-muted);
 }
 
 .article-time {
@@ -202,11 +204,6 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
 
 .article-byline {
   margin: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0;
-  font-size: 0.95rem;
   color: var(--parish-muted);
 }
 
