@@ -1,18 +1,75 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { getNewsBySlug, getRecentNews } from '../data/site'
 
 const route = useRoute()
 const article = computed(() => getNewsBySlug(route.params.slug))
 const recent = computed(() => getRecentNews(route.params.slug, 5))
+
+const snackbar = ref(false)
+const snackMsg = ref('')
+
+function articleUrl() {
+  if (typeof window === 'undefined') return ''
+  return window.location.href
+}
+
+async function shareArticle() {
+  const url = articleUrl()
+  const title = article.value?.title || 'Notícia'
+  const text = article.value?.excerpt || ''
+
+  if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+    try {
+      await navigator.share({ title, text, url })
+      return
+    } catch (err) {
+      if (err && err.name === 'AbortError') return
+    }
+  }
+
+  try {
+    await navigator.clipboard.writeText(url)
+    snackMsg.value = 'Link da notícia copiado.'
+  } catch {
+    snackMsg.value = 'Não foi possível compartilhar. Copie o endereço da barra do navegador.'
+  }
+  snackbar.value = true
+}
 </script>
 
 <template>
   <section class="article-page">
     <div class="container">
       <template v-if="article">
-        <div class="article-top">
+        <div class="article-actions">
+          <v-btn
+            class="action-btn"
+            variant="text"
+            :to="'/noticias'"
+            prepend-icon="mdi-arrow-left"
+          >
+            Voltar
+          </v-btn>
+          <v-btn
+            class="action-btn"
+            variant="text"
+            prepend-icon="mdi-share-variant"
+            type="button"
+            @click="shareArticle"
+          >
+            Compartilhar
+          </v-btn>
+        </div>
+
+        <header class="article-header">
+          <h1 class="article-title">{{ article.title }}</h1>
+          <p class="article-meta">
+            <time>{{ article.time }} · {{ article.date }}</time>
+            <span aria-hidden="true"> · </span>
+            <span>Por {{ article.author }}</span>
+          </p>
           <nav class="breadcrumb" aria-label="Navegação estrutural">
             <RouterLink to="/">Início</RouterLink>
             <span aria-hidden="true">/</span>
@@ -20,26 +77,6 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
             <span aria-hidden="true">/</span>
             <span>{{ article.title }}</span>
           </nav>
-
-          <v-btn
-            class="btn-outline back-btn"
-            variant="outlined"
-            :to="'/noticias'"
-            prepend-icon="mdi-arrow-left"
-          >
-            Voltar
-          </v-btn>
-        </div>
-
-        <header class="article-header">
-          <h1 class="article-title">{{ article.title }}</h1>
-                    <p class="article-meta">
-            <time class="article-time">{{ article.time }}</time>
-            <span class="article-meta-sep" aria-hidden="true">·</span>
-            <time class="article-date">{{ article.date }}</time>
-            <span class="article-meta-sep" aria-hidden="true">·</span>
-            <span class="article-byline">Publicado por <strong>{{ article.author }}</strong></span>
-          </p>
           <p class="article-excerpt">{{ article.excerpt }}</p>
         </header>
 
@@ -73,7 +110,7 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
                     <span class="sidebar-item__cat">{{ item.category }}</span>
                     <span class="sidebar-item__title">{{ item.title }}</span>
                     <span class="sidebar-item__meta">
-                      {{ item.time }} · {{ item.date }}
+                      {{ item.date }} · {{ item.time }}
                     </span>
                   </RouterLink>
                 </li>
@@ -87,18 +124,10 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
       </template>
 
       <template v-else>
-        <div class="article-top">
-          <nav class="breadcrumb" aria-label="Navegação estrutural">
-            <RouterLink to="/">Início</RouterLink>
-            <span aria-hidden="true">/</span>
-            <RouterLink to="/noticias">Notícias</RouterLink>
-            <span aria-hidden="true">/</span>
-            <span>Não encontrada</span>
-          </nav>
-
+        <div class="article-actions">
           <v-btn
-            class="btn-outline back-btn"
-            variant="outlined"
+            class="action-btn"
+            variant="text"
             :to="'/noticias'"
             prepend-icon="mdi-arrow-left"
           >
@@ -117,6 +146,10 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
         </div>
       </template>
     </div>
+
+    <v-snackbar v-model="snackbar" :timeout="2800" color="primary" location="bottom">
+      {{ snackMsg }}
+    </v-snackbar>
   </section>
 </template>
 
@@ -127,12 +160,47 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
   padding: 20px 0 56px;
 }
 
-.article-top {
+.article-actions {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 22px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 18px;
+}
+
+.action-btn.v-btn {
+  font-weight: 600 !important;
+  color: var(--parish-maroon) !important;
+  letter-spacing: 0.01em !important;
+  text-transform: none !important;
+  padding-inline: 10px !important;
+}
+
+.action-btn.v-btn:hover,
+.action-btn.v-btn:focus-visible {
+  color: var(--parish-navy) !important;
+  background: rgba(122, 36, 48, 0.06) !important;
+}
+
+.article-header {
+  max-width: calc(100% - 332px);
+  margin-bottom: 28px;
+}
+
+.article-title {
+  margin: 0 0 12px;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 600;
+  color: var(--parish-navy);
+  line-height: 1.15;
+}
+
+.article-meta {
+  margin: 0 0 10px;
+  font-size: 0.95rem;
+  color: var(--parish-muted);
+  line-height: 1.45;
 }
 
 .breadcrumb {
@@ -140,7 +208,7 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
   align-items: center;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 0;
+  margin: 0 0 18px;
   font-size: 0.9rem;
   color: var(--parish-muted);
 }
@@ -155,61 +223,6 @@ const recent = computed(() => getRecentNews(route.params.slug, 5))
 .breadcrumb a:focus-visible {
   color: var(--parish-maroon);
   outline: none;
-}
-
-.back-btn.v-btn {
-  min-width: 110px;
-  font-weight: 600 !important;
-}
-
-.article-header {
-  max-width: calc(100% - 332px);
-  margin-bottom: 28px;
-}
-
-.article-title {
-  margin: 0 0 14px;
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 2.75rem);
-  font-weight: 600;
-  color: var(--parish-navy);
-  line-height: 1.15;
-}
-
-.article-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0;
-  margin: 0 0 16px;
-  font-size: 0.95rem;
-  color: var(--parish-muted);
-}
-
-.article-time {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--parish-navy);
-}
-
-.article-date {
-  font-size: 0.95rem;
-  color: var(--parish-muted);
-}
-
-.article-meta-sep {
-  margin: 0 6px;
-  color: var(--parish-muted);
-}
-
-.article-byline {
-  margin: 0;
-  color: var(--parish-muted);
-}
-
-.article-byline strong {
-  color: var(--parish-navy);
-  font-weight: 600;
 }
 
 .article-excerpt {
