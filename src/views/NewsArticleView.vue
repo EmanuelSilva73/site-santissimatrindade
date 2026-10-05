@@ -81,17 +81,19 @@ async function shareArticle() {
             </nav>
           </div>
 
-          <div
-            class="header-hero"
-            role="img"
-            aria-label="Ilustração padrão de notícia"
-          >
-            <v-icon
-              icon="mdi-newspaper-variant-outline"
-              size="108"
-              class="header-hero__icon"
-              aria-hidden="true"
-            />
+          <div class="header-hero-wrap">
+            <div
+              class="header-hero"
+              role="img"
+              aria-label="Ilustração padrão de notícia"
+            >
+              <v-icon
+                icon="mdi-newspaper-variant-outline"
+                size="108"
+                class="header-hero__icon"
+                aria-hidden="true"
+              />
+            </div>
           </div>
         </header>
 
@@ -199,10 +201,17 @@ async function shareArticle() {
 
 .article-header {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 24px 28px;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 24px 20px;
   align-items: center;
   margin-bottom: 28px;
+}
+
+.header-hero-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .article-header__copy {
