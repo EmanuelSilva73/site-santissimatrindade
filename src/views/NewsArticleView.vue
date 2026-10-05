@@ -65,6 +65,7 @@ async function shareArticle() {
 
         <header class="article-header">
           <h1 class="article-title">{{ article.title }}</h1>
+          <p class="article-excerpt">{{ article.excerpt }}</p>
           <p class="article-meta">
             <time>{{ article.time }} · {{ article.date }}</time>
             <span aria-hidden="true"> · </span>
@@ -77,7 +78,6 @@ async function shareArticle() {
             <span aria-hidden="true">/</span>
             <span>{{ article.title }}</span>
           </nav>
-          <p class="article-excerpt">{{ article.excerpt }}</p>
         </header>
 
         <div class="article-layout">
@@ -226,6 +226,7 @@ async function shareArticle() {
 }
 
 .article-excerpt {
+  margin-top: 10px;
   margin: 0;
   font-size: 1.15rem;
   line-height: 1.55;
