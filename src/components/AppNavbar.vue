@@ -104,7 +104,7 @@ const links = computed(() => navLinks)
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: var(--navbar-height);
+  min-height: calc(var(--navbar-height) + 8px);
   gap: 24px;
 }
 
@@ -120,7 +120,7 @@ const links = computed(() => navLinks)
 .nav-links a {
   position: relative;
   color: var(--parish-navy);
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   font-weight: 500;
   text-decoration: none;
   padding-bottom: 4px;

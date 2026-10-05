@@ -35,8 +35,8 @@ defineProps({
 .app-logo__img {
   display: block;
   width: auto;
-  height: 52px;
-  max-width: min(280px, 58vw);
+  height: 64px;
+  max-width: min(320px, 62vw);
   object-fit: contain;
 }
 
@@ -47,8 +47,8 @@ defineProps({
 
 @media (max-width: 600px) {
   .app-logo--nav .app-logo__img {
-    height: 44px;
-    max-width: min(200px, 52vw);
+    height: 48px;
+    max-width: min(220px, 54vw);
   }
 }
 </style>
