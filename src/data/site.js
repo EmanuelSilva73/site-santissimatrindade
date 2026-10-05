@@ -49,7 +49,6 @@ export const heroCarousel = {
         destaque: 'Missa às 18h',
         complemento: 'Confissões das 9h às 11h',
         rotulo_info: 'Amanhã: missa às 7h e, na Comunidade Santa Helena, às 19h.',
-        link: { label: 'Ver todos os horários', href: '/#horarios' },
       },
     },
     {
@@ -69,7 +68,6 @@ export const heroCarousel = {
         destaque: 'Adoração ao Santíssimo',
         complemento: 'Silêncio, louvor e oração diante de Jesus Eucarístico.',
         rotulo_info: 'Quando: [dia e horário]',
-        link: { label: 'Saiba mais', href: '/noticias' },
       },
     },
     {
@@ -89,7 +87,6 @@ export const heroCarousel = {
         destaque: 'R$ 15,00',
         complemento: 'Entrada + 4 bolas de sorvete',
         rotulo_info: 'Local: SINTUFPI',
-        link: { label: 'Ver local no mapa', href: '/#contato' },
       },
     },
     {
@@ -117,11 +114,6 @@ export const heroCarousel = {
         destaque: 'Canal da paróquia',
         complemento: 'Paróquia Santíssima Trindade',
         rotulo_info: 'Quando: [dias e horários das transmissões]',
-        link: {
-          label: 'Abrir o canal',
-          href: 'https://www.youtube.com',
-          external: true,
-        },
       },
     },
   ],
