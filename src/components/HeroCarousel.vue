@@ -143,6 +143,7 @@ function linkAttrs(btn) {
             {{ slide.cartao.rotulo_info }}
           </p>
           <a
+            v-if="slide.cartao.link"
             class="text-link hero-card__link"
             v-bind="linkAttrs(slide.cartao.link)"
           >
