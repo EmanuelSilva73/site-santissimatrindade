@@ -29,7 +29,9 @@ import { history } from '../data/site'
           class="btn-outline-light"
           variant="outlined"
           size="large"
-          :href="history.cta.href"
+          v-bind="history.cta.href.startsWith('/') && !history.cta.href.startsWith('/#')
+            ? { to: history.cta.href }
+            : { href: history.cta.href }"
         >
           {{ history.cta.label }}
         </v-btn>

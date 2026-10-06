@@ -2,9 +2,11 @@
  * Conteúdo da página inicial — Paróquia Santíssima Trindade.
  *
  * Estrutura preparada para CMS futuro (Directus ou similar):
- * - singletons: site, contact, history, dizimo, liturgyToday
+ * - singletons: site, contact, history, historyPage, parocosPage, pastoraisPage,
+ *   comunidadesPage, pedidoOracaoPage, dizimo, liturgyToday
  * - coleções: navLinks, heroSlides, news, massSchedule, communities,
- *   confessions, sacraments, celebrations, footerColumns
+ *   confessions, sacraments, celebrations, footerColumns, historyTimeline, parocos,
+ *   pastorais, comunidades
  */
 
 export const site = {
@@ -18,14 +20,32 @@ export const site = {
   copyright: '© 2026 Paróquia Santíssima Trindade, Teresina – PI',
 }
 
+/**
+ * Menu principal. Itens com `children` viram submenu (dropdown no desktop,
+ * grupo expansível no mobile). O logo já leva para o início.
+ * Submenu "A Paróquia": /historia, /paroco, /pastorais e /comunidades.
+ */
 export const navLinks = [
-  { id: 'inicio', label: 'Início', href: '/#inicio' },
-  { id: 'a-paroquia', label: 'A Paróquia', href: '/#a-paroquia' },
+  {
+    id: 'a-paroquia',
+    label: 'A Paróquia',
+    children: [
+      { id: 'historia', label: 'História', href: '/historia' },
+      { id: 'paroco', label: 'Párocos', href: '/paroco' },
+      { id: 'pastorais', label: 'Pastorais', href: '/pastorais' },
+      { id: 'comunidades', label: 'Comunidades', href: '/comunidades' },
+    ],
+  },
   { id: 'horarios', label: 'Horários', href: '/#horarios' },
-  { id: 'sacramentos', label: 'Sacramentos', href: '/#sacramentos' },
   { id: 'noticias', label: 'Notícias', href: '/noticias' },
-  { id: 'pastorais', label: 'Pastorais', href: '/#pastorais' },
+  {
+    id: 'pedido-de-oracoes',
+    label: 'Pedido de Oração',
+    href: '/pedido-de-oracoes',
+    keywords: 'pedido de oração intenção rezar', // termos extras para a busca (lupa)
+  },
   { id: 'contato', label: 'Contato', href: '/#contato' },
+  { id: 'dizimo', label: 'Dízimo', href: '/#dizimo', highlight: true },
 ]
 
 /** Banners dinâmicos do topo — autoplay 7s, pausa no hover / botão */
@@ -434,15 +454,21 @@ export function getRecentNews(excludeSlug, limit = 5) {
 }
 
 
+/**
+ * Singleton `dizimo` no Directus. pix_qr_url = imagem do QR Code PIX (upload no Directus);
+ * vazio → placeholder. A chave PIX por escrito não é exibida (só o QR Code).
+ */
 export const dizimo = {
   title: 'Dízimo e Ofertas',
   text: 'O dízimo sustenta a vida da paróquia: as celebrações, a catequese e o cuidado com quem mais precisa.',
   quote: 'Deus ama quem dá com alegria.',
   quote_ref: '2Cor 9,7',
-  pix_label: 'Chave PIX (CNPJ)',
-  pix_key: '[chave PIX da paróquia]',
+  pix_qr_url: '',
+  pix_qr_alt: 'QR Code PIX para dízimo e ofertas da Paróquia Santíssima Trindade',
+  pix_qr_label: 'QR Code PIX',
+  pix_qr_hint: 'Abra o app do seu banco e escaneie o código.',
+  pix_favorecido: 'Paróquia Santíssima Trindade',
   pix_note: 'Para ser dizimista, preencha a ficha na secretaria.',
-  copy_label: 'Copiar chave',
 }
 
 export const masses = {
@@ -502,51 +528,137 @@ export const liturgyToday = {
   },
 }
 
+/*
+ * Sacramentos — coleção `sacraments` (itens) + campos do bloco.
+ * Cada item traz `documentos` (lista), `procedimento` (passos em ordem) e
+ * `observacao` (texto curto, opcional), exibidos no pop-up "Mais Informações".
+ *
+ * ATENÇÃO: documentos, procedimentos e observações abaixo são CONTEÚDO DE
+ * EXEMPLO, baseado em exigências comuns das paróquias no Brasil.
+ * Confirmar tudo com a secretaria paroquial antes de publicar.
+ */
 export const sacraments = {
   title: 'Sacramentos',
   lead: 'Para pedir um sacramento, comece pela secretaria. A equipe explica a preparação e os documentos.',
+  more_label: 'Mais Informações',
+  docs_title: 'Documentação Necessária',
+  steps_title: 'Como Solicitar na Secretaria',
+  secretaria_title: 'Secretaria Paroquial',
+  call_label: 'Ligar para a Secretaria',
+  close_label: 'Fechar',
   items: [
     {
       id: 'batismo',
       title: 'Batismo',
       text: 'Para crianças e adultos. Agende na secretaria; pais e padrinhos participam de um encontro de preparação.',
       icon: 'mdi-water',
-      link: { label: 'Como pedir', href: '/#contato' },
+      documentos: [
+        'Certidão de nascimento da criança (cópia)',
+        'Documento de identidade com foto e CPF dos pais e dos padrinhos',
+        'Comprovante de residência',
+        'Padrinhos: comprovante de Batismo e de Crisma; se casados, certidão de casamento religioso',
+        'Autorização da paróquia de origem, se a família morar em outra paróquia',
+      ],
+      procedimento: [
+        'Vá à secretaria com os documentos e preencha a ficha de inscrição.',
+        'Escolha a data do Batismo e a do encontro de preparação.',
+        'Pais e padrinhos participam do encontro de preparação.',
+        'No dia, chegue à igreja com antecedência.',
+      ],
+      observacao:
+        'Faça a inscrição com pelo menos 30 dias de antecedência. Adultos passam pela catequese antes do Batismo.',
     },
     {
       id: 'eucaristia',
       title: 'Eucaristia',
       text: 'A catequese prepara crianças, jovens e adultos para a Primeira Comunhão.',
       icon: 'mdi-cup',
-      link: { label: 'Como pedir', href: '/#contato' },
+      documentos: [
+        'Certidão de nascimento (cópia)',
+        'Certidão ou lembrança de Batismo',
+        'Documento de identidade dos pais ou responsáveis',
+        'Comprovante de residência',
+      ],
+      procedimento: [
+        'Faça a inscrição na catequese pela secretaria, no período de matrículas.',
+        'Participe dos encontros de catequese.',
+        'Pais ou responsáveis comparecem às reuniões marcadas pela catequese.',
+        'Ao final da preparação, a paróquia marca a celebração da Primeira Comunhão.',
+      ],
+      observacao:
+        'Crianças, jovens e adultos têm turmas próprias. Pergunte na secretaria as datas de inscrição.',
     },
     {
       id: 'crisma',
       title: 'Crisma',
       text: 'Preparação para jovens e adultos que desejam confirmar a fé recebida no Batismo.',
       icon: 'mdi-fire',
-      link: { label: 'Como pedir', href: '/#contato' },
+      documentos: [
+        'Certidão de Batismo',
+        'Comprovante da Primeira Comunhão',
+        'Documento de identidade com foto',
+        'Comprovante de residência',
+        'Padrinho ou madrinha: crismado e, se casado, casado na Igreja',
+      ],
+      procedimento: [
+        'Inscreva-se na secretaria no período de inscrições.',
+        'Participe dos encontros de preparação para a Crisma.',
+        'Escolha o padrinho ou a madrinha e entregue os dados na secretaria.',
+        'A paróquia informa a data da celebração com o bispo.',
+      ],
+      observacao: 'A idade mínima e o calendário da turma são informados na secretaria.',
     },
     {
       id: 'confissao',
       title: 'Confissão',
       text: 'Na Igreja Matriz, às terças e sextas, das 9h às 11h.',
       icon: 'mdi-key-variant',
-      link: { label: 'Ver horários', href: '/#horarios' },
+      documentos: ['Não é preciso apresentar documentos.'],
+      procedimento: [
+        'Venha à Igreja Matriz às terças e sextas, das 9h às 11h.',
+        'Antes, faça um exame de consciência.',
+        'Para confissão em outro horário ou de pessoa doente, combine com a secretaria.',
+      ],
+      observacao:
+        'Antes do Natal e da Páscoa a paróquia costuma abrir horários extras, divulgados nas notícias.',
     },
     {
       id: 'matrimonio',
       title: 'Matrimônio',
       text: 'Procure a secretaria com antecedência para marcar a data e o curso de noivos.',
       icon: 'mdi-ring',
-      link: { label: 'Como pedir', href: '/#contato' },
+      documentos: [
+        'Certidão de Batismo dos noivos, atualizada (emitida há menos de 6 meses)',
+        'Comprovante de Crisma',
+        'Documento de identidade com foto e CPF dos noivos',
+        'Certidão de nascimento ou de casamento civil',
+        'Comprovante de residência',
+        'Certificado do curso de noivos',
+        'Documento de identidade de duas testemunhas',
+      ],
+      procedimento: [
+        'Procurem a secretaria para verificar a data disponível.',
+        'Façam o curso de noivos.',
+        'Agendem a entrevista com o padre para o processo matrimonial.',
+        'Entreguem os documentos e confirmem os detalhes da celebração.',
+      ],
+      observacao:
+        'Procurem a secretaria com pelo menos 6 meses de antecedência. Para efeito civil, providenciem também a habilitação no cartório.',
     },
     {
       id: 'uncao',
       title: 'Unção dos Enfermos',
       text: 'Para doentes e idosos. Ligue para a secretaria e combine a visita do padre.',
       icon: 'mdi-hand-heart',
-      link: { label: 'Como pedir', href: '/#contato' },
+      documentos: ['Não é preciso apresentar documentos.'],
+      procedimento: [
+        'Ligue para a secretaria ou vá pessoalmente.',
+        'Informe o nome do doente, o endereço e um telefone de contato.',
+        'Combine o dia e o horário da visita do padre.',
+        'Em caso de risco de morte, avise com urgência.',
+      ],
+      observacao:
+        'Na mesma visita, o doente pode se confessar e receber a Comunhão.',
     },
   ],
 }
@@ -601,9 +713,432 @@ export const history = {
   ],
   pastor_label: 'Pároco',
   pastor_name: 'Pe. Antônio Francisco dos Santos Cruz',
-  cta: { label: 'Conheça a Nossa História', href: '/#a-paroquia' },
+  cta: { label: 'Conheça a Nossa História', href: '/historia' },
   photo_label: 'Foto da fachada da Igreja Matriz',
   photo_alt: 'Fachada da Igreja Matriz da Paróquia Santíssima Trindade',
+}
+
+/**
+ * Página /historia — singleton `history_page` no Directus (+ coleção `history_timeline`
+ * relacionada, ordenada por `sort`). Os dois primeiros parágrafos repetem o texto do bloco
+ * "Nossa História" da home (`history.paragraphs`). Trechos entre colchetes são
+ * PLACEHOLDERS: substituir pelo texto confirmado com a secretaria antes de publicar.
+ */
+export const historyPage = {
+  title: 'Nossa História',
+  resumo:
+    'Da Igreja Matriz no bairro Primavera às comunidades Nossa Senhora da Esperança e Santa Helena: a caminhada de fé da Paróquia Santíssima Trindade na zona Norte de Teresina.',
+  breadcrumb_parent: 'A Paróquia',
+  hero_icon: 'mdi-church-outline',
+  photo_url: '', // imagem (Directus file) — vazio = placeholder
+  photo_label: 'Foto histórica da Igreja Matriz',
+  photo_alt: 'Foto histórica da Igreja Matriz da Paróquia Santíssima Trindade',
+  body: [
+    ...history.paragraphs,
+    '[Texto a confirmar com a secretaria: origem da paróquia, data de criação e quem a instituiu.]',
+    '[Texto a confirmar com a secretaria: construção da Igreja Matriz e formação das comunidades Nossa Senhora da Esperança e Santa Helena.]',
+    '[Texto a confirmar com a secretaria: párocos que serviram à paróquia e marcos da vida pastoral.]',
+  ],
+  quote: {
+    text: 'Ide, pois, e fazei discípulos de todas as nações, batizando-os em nome do Pai, do Filho e do Espírito Santo.',
+    source: 'Mt 28,19',
+  },
+  timeline_title: 'Linha do Tempo',
+  timeline_lead: 'Principais marcos da caminhada da paróquia. Datas e descrições a confirmar com a secretaria.',
+  timeline: [
+    {
+      id: 1,
+      sort: 1,
+      year: '[Ano a confirmar]',
+      title: 'Criação da Paróquia',
+      description: '[Texto a confirmar com a secretaria]',
+    },
+    {
+      id: 2,
+      sort: 2,
+      year: '[Ano a confirmar]',
+      title: 'Construção da Igreja Matriz',
+      description: '[Texto a confirmar com a secretaria]',
+    },
+    {
+      id: 3,
+      sort: 3,
+      year: '[Ano a confirmar]',
+      title: 'Início da Missa da Misericórdia',
+      description:
+        'Celebração que começou nesta igreja e hoje reúne milhares de fiéis. [Detalhes a confirmar com a secretaria]',
+    },
+    {
+      id: 4,
+      sort: 4,
+      year: '[Ano a confirmar]',
+      title: 'Patrimônio Cultural Imaterial do Piauí',
+      description:
+        'A Missa da Misericórdia é reconhecida como Patrimônio Cultural Imaterial do Piauí. [Detalhes a confirmar com a secretaria]',
+    },
+    {
+      id: 5,
+      sort: 5,
+      year: '[Ano a confirmar]',
+      title: 'Comunidades Nossa Senhora da Esperança e Santa Helena',
+      description: '[Texto a confirmar com a secretaria]',
+    },
+  ],
+}
+
+/**
+ * Página /paroco — singleton `parocos_page` no Directus.
+ */
+export const parocosPage = {
+  title: 'Nossos Párocos',
+  resumo:
+    'Conheça os sacerdotes que conduziram e conduzem a caminhada de fé da Paróquia Santíssima Trindade.',
+  breadcrumb_parent: 'A Paróquia',
+  breadcrumb_label: 'Párocos',
+  hero_icon: 'mdi-account-tie',
+  periodo_label: 'Período na Paróquia',
+  atual_label: 'Pároco Atual',
+  atual_periodo_fim_label: 'Atual',
+  anteriores_title: 'Párocos Anteriores',
+  foto_placeholder_label: 'Foto do pároco',
+}
+
+/**
+ * Coleção `parocos` no Directus (foto_url = arquivo do Directus; vazio = placeholder).
+ * Ordem de exibição: pároco atual primeiro, depois os anteriores do mais recente ao mais
+ * antigo (campo `sort`). periodo_fim = null → "Atual".
+ * Campos opcionais: apelido (exibido sob o nome), tag (selo, ex.: "Fundador"),
+ * periodo_nota (complemento do período, ex.: "cerca de 31 anos").
+ * Trechos entre colchetes são PLACEHOLDERS a confirmar com a secretaria.
+ */
+export const parocos = [
+  {
+    id: 1,
+    sort: 1,
+    titulo: 'Pe.',
+    nome: history.pastor_name.replace(/^Pe\.\s*/, ''),
+    apelido: 'Padre Toinho / Padre Cruz',
+    tag: 'No Colo da Trindade',
+    foto_url: '',
+    foto_alt: `Foto do ${history.pastor_name}`,
+    // Provavelmente 2024 (sucessor do Pe. Edvaldo), mas ainda não confirmado.
+    periodo_inicio: '[Ano a confirmar]',
+    periodo_fim: null,
+    periodo_nota: '',
+    atual: true,
+    biografia: [
+      'Conhecido como Padre Toinho ou Padre Cruz, é o atual pároco da Paróquia Santíssima Trindade.',
+      'Em 2026, comemorou 40 anos de ordenação sacerdotal.',
+      'Criou o "No Colo da Trindade", momento de adoração ao Santíssimo Sacramento após a Santa Missa.',
+      '[Biografia completa a confirmar com a secretaria]',
+    ],
+    frase: '[Frase marcante a confirmar]',
+    frase_fonte: '',
+  },
+  {
+    id: 2,
+    sort: 2,
+    titulo: 'Pe.',
+    nome: 'Edvaldo Barbosa Lima',
+    apelido: '',
+    tag: '',
+    foto_url: '',
+    foto_alt: 'Foto do Pe. Edvaldo Barbosa Lima',
+    periodo_inicio: '[Ano a confirmar]',
+    periodo_fim: '2024',
+    periodo_nota: '',
+    atual: false,
+    biografia: [
+      'Pe. Edvaldo Barbosa Lima atuou na Paróquia Santíssima Trindade até 2024, quando foi transferido para a Paróquia Cristo Rei.',
+      '[Biografia completa a confirmar com a secretaria]',
+    ],
+    frase: '[Frase marcante a confirmar]',
+    frase_fonte: '',
+  },
+  {
+    id: 3,
+    sort: 3,
+    titulo: 'Pe.',
+    nome: 'Nilton Santos',
+    apelido: '',
+    tag: 'Missa da Misericórdia',
+    foto_url: '',
+    foto_alt: 'Foto do Pe. Nilton Santos',
+    periodo_inicio: '[Ano a confirmar]',
+    periodo_fim: '2018',
+    periodo_nota: '',
+    atual: false,
+    biografia: [
+      'Pe. Nilton Santos é conhecido pela Missa da Misericórdia. Foi transferido da paróquia em 2018.',
+      '[Biografia completa a confirmar com a secretaria]',
+    ],
+    frase: '[Frase marcante a confirmar]',
+    frase_fonte: '',
+  },
+  {
+    id: 4,
+    sort: 4,
+    titulo: 'Pe.',
+    nome: 'Manoel',
+    apelido: '',
+    tag: 'Fundador',
+    foto_url: '',
+    foto_alt: 'Foto do Pe. Manoel',
+    periodo_inicio: '[Ano a confirmar]',
+    periodo_fim: '[Ano a confirmar]',
+    periodo_nota: 'cerca de 31 anos',
+    atual: false,
+    biografia: [
+      'Fundador da paróquia, Pe. Manoel acompanhou a comunidade por cerca de 31 anos.',
+      '[Biografia completa a confirmar com a secretaria]',
+    ],
+    frase: '[Frase marcante a confirmar]',
+    frase_fonte: '',
+  },
+]
+
+/**
+ * Página /pastorais — singleton `pastorais_page` no Directus.
+ */
+export const pastoraisPage = {
+  title: 'Pastorais e Movimentos',
+  resumo:
+    'Conheça as pastorais e os movimentos que animam a vida da Paróquia Santíssima Trindade e descubra onde você pode servir.',
+  breadcrumb_parent: 'A Paróquia',
+  breadcrumb_label: 'Pastorais',
+  hero_icon: 'mdi-hands-pray',
+  demais_title: 'Demais Pastorais',
+  demais_lead: 'Outros grupos, pastorais e movimentos da paróquia.',
+  coordenador_label: 'Coordenação',
+  encontros_label: 'Encontros',
+  local_label: 'Local',
+  contato_fallback_label: 'Falar com a Secretaria',
+  cta_title: 'Quer Participar?',
+  cta_text:
+    'Procure a secretaria paroquial para saber os dias de encontro e como fazer parte de uma pastoral ou movimento.',
+  cta_label: 'Falar com a Secretaria',
+}
+
+/**
+ * Coleção `pastorais` no Directus. `destaque: true` → card grande no topo da página;
+ * as demais aparecem na grade "Demais Pastorais". Ordem pelo campo `sort`.
+ * ATENÇÃO: lista de EXEMPLO (pastorais comuns em paróquias católicas) — confirmar com a
+ * secretaria quais existem de fato, além de coordenação, encontros, local e contatos.
+ * Fatos já conhecidos: a Pastoral do Dízimo atende após as missas de domingo; a Pastoral
+ * da Comunicação publica as notícias do site.
+ */
+export const pastorais = [
+  {
+    id: 1,
+    sort: 1,
+    nome: 'Pastoral do Dízimo',
+    slug: 'pastoral-do-dizimo',
+    destaque: true,
+    icone: 'mdi-hand-heart-outline',
+    foto_url: '',
+    foto_alt: 'Foto: Pastoral do Dízimo',
+    descricao:
+      'Acolhe os dizimistas, mantém o cadastro atualizado e anima a comunidade a partilhar com gratidão aquilo que recebe de Deus.',
+    coordenador: '[A confirmar com a secretaria]',
+    encontros: 'Atendimento após as missas de domingo',
+    local: '[A confirmar com a secretaria]',
+    contato_label: 'Saiba Mais Sobre o Dízimo',
+    contato_href: '/#dizimo',
+  },
+  {
+    id: 2,
+    sort: 2,
+    nome: 'Catequese',
+    slug: 'catequese',
+    destaque: true,
+    icone: 'mdi-book-cross',
+    foto_url: '',
+    foto_alt: 'Foto: Catequese',
+    descricao:
+      'Prepara crianças, jovens e adultos para os sacramentos da Iniciação Cristã e acompanha o crescimento na fé.',
+    coordenador: '[A confirmar com a secretaria]',
+    encontros: '[A confirmar com a secretaria]',
+    local: '[A confirmar com a secretaria]',
+    contato_label: '',
+    contato_href: '',
+  },
+  {
+    id: 3,
+    sort: 3,
+    nome: 'Pastoral da Juventude',
+    slug: 'pastoral-da-juventude',
+    destaque: true,
+    icone: 'mdi-account-group-outline',
+    foto_url: '',
+    foto_alt: 'Foto: Pastoral da Juventude',
+    descricao:
+      'Reúne os jovens para viver a fé em comunidade, com momentos de oração, formação, convivência e serviço.',
+    coordenador: '[A confirmar com a secretaria]',
+    encontros: '[A confirmar com a secretaria]',
+    local: '[A confirmar com a secretaria]',
+    contato_label: '',
+    contato_href: '',
+  },
+  {
+    id: 4,
+    sort: 4,
+    nome: 'Pastoral da Comunicação',
+    slug: 'pastoral-da-comunicacao',
+    destaque: false,
+    icone: 'mdi-bullhorn-outline',
+    foto_url: '',
+    foto_alt: 'Foto: Pastoral da Comunicação',
+    descricao:
+      'Cuida da divulgação da vida paroquial: notícias, avisos e redes sociais da paróquia.',
+    coordenador: '[A confirmar com a secretaria]',
+    encontros: '[A confirmar com a secretaria]',
+    local: '[A confirmar com a secretaria]',
+    contato_label: 'Ver Notícias',
+    contato_href: '/noticias',
+  },
+  {
+    id: 5,
+    sort: 5,
+    nome: 'Pastoral Familiar',
+    slug: 'pastoral-familiar',
+    destaque: false,
+    icone: 'mdi-home-heart',
+    foto_url: '',
+    foto_alt: 'Foto: Pastoral Familiar',
+    descricao:
+      'Acompanha as famílias e os casais, com encontros de formação, preparação para o matrimônio e apoio nas diferentes fases da vida.',
+    coordenador: '[A confirmar com a secretaria]',
+    encontros: '[A confirmar com a secretaria]',
+    local: '[A confirmar com a secretaria]',
+    contato_label: '',
+    contato_href: '',
+  },
+  {
+    id: 6,
+    sort: 6,
+    nome: 'Pastoral da Liturgia',
+    slug: 'pastoral-da-liturgia',
+    destaque: false,
+    icone: 'mdi-candle',
+    foto_url: '',
+    foto_alt: 'Foto: Pastoral da Liturgia',
+    descricao:
+      'Prepara e anima as celebrações: leitores, comentaristas, acólitos e equipe de canto.',
+    coordenador: '[A confirmar com a secretaria]',
+    encontros: '[A confirmar com a secretaria]',
+    local: '[A confirmar com a secretaria]',
+    contato_label: '',
+    contato_href: '',
+  },
+  {
+    id: 7,
+    sort: 7,
+    nome: 'Pastoral do Batismo',
+    slug: 'pastoral-do-batismo',
+    destaque: false,
+    icone: 'mdi-water-outline',
+    foto_url: '',
+    foto_alt: 'Foto: Pastoral do Batismo',
+    descricao:
+      'Orienta pais e padrinhos na preparação para o Batismo das crianças.',
+    coordenador: '[A confirmar com a secretaria]',
+    encontros: '[A confirmar com a secretaria]',
+    local: '[A confirmar com a secretaria]',
+    contato_label: '',
+    contato_href: '',
+  },
+  {
+    id: 8,
+    sort: 8,
+    nome: 'Ministros Extraordinários da Sagrada Comunhão',
+    slug: 'ministros-extraordinarios-da-sagrada-comunhao',
+    destaque: false,
+    icone: 'mdi-cup-outline',
+    foto_url: '',
+    foto_alt: 'Foto: Ministros Extraordinários da Sagrada Comunhão',
+    descricao:
+      'Auxiliam na distribuição da Eucaristia nas missas e levam a Comunhão aos doentes e idosos.',
+    coordenador: '[A confirmar com a secretaria]',
+    encontros: '[A confirmar com a secretaria]',
+    local: '[A confirmar com a secretaria]',
+    contato_label: '',
+    contato_href: '',
+  },
+  {
+    id: 9,
+    sort: 9,
+    nome: 'Legião de Maria',
+    slug: 'legiao-de-maria',
+    destaque: false,
+    icone: 'mdi-flower-outline',
+    foto_url: '',
+    foto_alt: 'Foto: Legião de Maria',
+    descricao:
+      'Movimento mariano de oração e apostolado, com visitas às famílias e aos doentes.',
+    coordenador: '[A confirmar com a secretaria]',
+    encontros: '[A confirmar com a secretaria]',
+    local: '[A confirmar com a secretaria]',
+    contato_label: '',
+    contato_href: '',
+  },
+  {
+    id: 10,
+    sort: 10,
+    nome: 'Terço dos Homens',
+    slug: 'terco-dos-homens',
+    destaque: false,
+    icone: 'mdi-hands-pray',
+    foto_url: '',
+    foto_alt: 'Foto: Terço dos Homens',
+    descricao:
+      'Reúne os homens da comunidade para rezar o terço e fortalecer a fé e a vida em família.',
+    coordenador: '[A confirmar com a secretaria]',
+    encontros: '[A confirmar com a secretaria]',
+    local: '[A confirmar com a secretaria]',
+    contato_label: '',
+    contato_href: '',
+  },
+  {
+    id: 11,
+    sort: 11,
+    nome: 'Pastoral Social',
+    slug: 'pastoral-social',
+    destaque: false,
+    icone: 'mdi-handshake-outline',
+    foto_url: '',
+    foto_alt: 'Foto: Pastoral Social',
+    descricao:
+      'Atende famílias em situação de vulnerabilidade, com campanhas de doação e acompanhamento solidário.',
+    coordenador: '[A confirmar com a secretaria]',
+    encontros: '[A confirmar com a secretaria]',
+    local: '[A confirmar com a secretaria]',
+    contato_label: '',
+    contato_href: '',
+  },
+]
+
+/**
+ * Página /pedido-de-oracoes — singleton `pedido_oracao_page` no Directus.
+ * Os pedidos enviados irão futuramente para uma coleção `pedidos_oracao` (ver PedidoOracoesView.vue).
+ */
+export const pedidoOracaoPage = {
+  title: 'Pedido de Oração',
+  resumo:
+    'Envie sua intenção de oração. A comunidade da Paróquia Santíssima Trindade reza pelos pedidos recebidos.',
+  breadcrumb_label: 'Pedido de Oração',
+  hero_icon: 'mdi-hands-pray',
+  form_title: 'Sua Intenção',
+  form_lead: 'Escreva seu pedido abaixo. O nome é opcional.',
+  name_label: 'Nome (opcional)',
+  name_placeholder: 'Seu nome',
+  request_label: 'Pedido / intenção',
+  request_placeholder: 'Escreva aqui a sua intenção de oração',
+  request_required_message: 'Escreva o seu pedido de oração.',
+  anonymous_label: 'Desejo que meu pedido seja anônimo',
+  submit_label: 'Enviar Pedido',
+  success_title: 'Pedido Recebido',
+  success_message: 'Seu pedido foi recebido. Rezaremos por sua intenção.',
+  new_request_label: 'Enviar Outro Pedido',
 }
 
 export const prayerRequest = {
@@ -631,41 +1166,145 @@ export const contact = {
     'Primavera, Teresina – PI',
   ],
   phone_label: 'Secretaria',
+  cnpj: '[CNPJ a confirmar]',
+  email: '[E-mail a confirmar]',
   phone: '(86) 3305-3327',
   phone_href: 'tel:+558633053327',
   instagram_label: 'Instagram',
   instagram: '@_paroquiasantissimatrindade',
   instagram_url: 'https://www.instagram.com/_paroquiasantissimatrindade',
+  youtube_label: 'YouTube',
+  youtube_url: 'https://www.youtube.com',
   route_label: 'Traçar rota',
   call_label: 'Ligar para a secretaria',
   communities_title: 'Comunidades',
   communities: [
     {
       name: 'Nossa Senhora da Esperança',
+      slug: 'nossa-senhora-da-esperanca',
       note: 'missa aos domingos, às 17h.',
     },
     {
       name: 'Santa Helena',
+      slug: 'santa-helena',
       note: 'missa aos sábados, às 19h.',
     },
   ],
 }
 
-export const pastorais = {
-  title: 'Pastorais e Movimentos',
-  lead: 'A lista real de pastorais e movimentos será confirmada com a secretaria.',
-  note: 'Enquanto isso, procure a secretaria para saber como participar.',
+/**
+ * Página /comunidades — singleton `comunidades_page` no Directus.
+ */
+export const comunidadesPage = {
+  title: 'Nossas Comunidades',
+  resumo:
+    'A Paróquia Santíssima Trindade reúne a Igreja Matriz, no bairro Primavera, e as comunidades Nossa Senhora da Esperança e Santa Helena.',
+  breadcrumb_parent: 'A Paróquia',
+  breadcrumb_label: 'Comunidades',
+  hero_icon: 'mdi-home-group',
+  padroeiro_label: 'Padroeiro(a)',
+  endereco_label: 'Endereço',
+  missas_label: 'Missas',
+  festa_label: 'Festa do Padroeiro',
+  maps_label: 'Como Chegar',
+  horarios_label: 'Ver Horários',
+  horarios_href: '/#horarios',
+  foto_placeholder_label: 'Foto da comunidade',
+  cta_title: 'Fale com a Secretaria',
+  cta_text:
+    'Dúvidas sobre horários, celebrações ou a vida das comunidades? A secretaria paroquial ajuda você.',
+  cta_label: 'Fale com a Secretaria',
 }
 
+/** Horários das comunidades vêm de `masses.communities.items` (mesma fonte da home). */
+const missasDaComunidade = (name) =>
+  masses.communities.items
+    .filter((item) => item.name === name)
+    .map((item) => ({ dia: item.day, horario: item.time }))
+
+/**
+ * Coleção `comunidades` no Directus (ordem pelo campo `sort`; Matriz primeiro).
+ * Missas: lista { dia, horario }. maps_url vazio → busca no Google Maps pelo nome + Teresina.
+ * Usa apenas dados já existentes no site; o restante é PLACEHOLDER a confirmar com a secretaria.
+ */
+export const comunidades = [
+  {
+    id: 1,
+    sort: 1,
+    nome: 'Igreja Matriz Santíssima Trindade',
+    slug: 'igreja-matriz',
+    tipo: 'Igreja Matriz',
+    icone: 'mdi-church',
+    padroeiro: 'Santíssima Trindade',
+    foto_url: '',
+    foto_alt: 'Foto da Igreja Matriz da Paróquia Santíssima Trindade',
+    descricao: 'Sede da Paróquia Santíssima Trindade, no bairro Primavera, zona Norte de Teresina.',
+    endereco: contact.address_lines[0],
+    bairro: contact.address_lines[1],
+    missas: masses.matriz.rows.map((row) => ({
+      dia: row.day,
+      horario: row.times ? row.times.join(' e ') : row.empty,
+      sem_missa: !row.times,
+    })),
+    maps_url: contact.maps_url,
+    festa_padroeiro: '[A confirmar com a secretaria]',
+  },
+  {
+    id: 2,
+    sort: 2,
+    nome: 'Comunidade Nossa Senhora da Esperança',
+    slug: 'nossa-senhora-da-esperanca',
+    tipo: 'Comunidade',
+    icone: 'mdi-church-outline',
+    padroeiro: 'Nossa Senhora da Esperança',
+    foto_url: '',
+    foto_alt: 'Foto da Comunidade Nossa Senhora da Esperança',
+    descricao: '[Descrição a confirmar com a secretaria]',
+    endereco: '[A confirmar com a secretaria]',
+    bairro: '',
+    missas: missasDaComunidade('Nossa Senhora da Esperança'),
+    maps_url: '',
+    festa_padroeiro: '[A confirmar com a secretaria]',
+  },
+  {
+    id: 3,
+    sort: 3,
+    nome: 'Comunidade Santa Helena',
+    slug: 'santa-helena',
+    tipo: 'Comunidade',
+    icone: 'mdi-church-outline',
+    padroeiro: 'Santa Helena',
+    foto_url: '',
+    foto_alt: 'Foto da Comunidade Santa Helena',
+    descricao: '[Descrição a confirmar com a secretaria]',
+    endereco: '[A confirmar com a secretaria]',
+    bairro: '',
+    missas: missasDaComunidade('Santa Helena'),
+    maps_url: '',
+    festa_padroeiro: '[A confirmar com a secretaria]',
+  },
+]
+
 export const footer = {
+  // Faixa final: "© … · Desenvolvido por: Delta.Io" (sem link — URL não informada)
+  credito_label: 'Desenvolvido por:',
+  credito_nome: 'Delta.Io',
+  contato_labels: {
+    endereco: 'Endereço',
+    cnpj: 'CNPJ',
+    email: 'E-mail',
+    telefone: 'Telefone',
+  },
+  secretaria_title: 'Secretaria',
+  instagram_label: 'Instagram',
+  mapa_label: 'Ver no mapa',
   columns: [
     {
       id: 'paroquia',
       title: 'A Paróquia',
       links: [
-        { label: 'Nossa História', href: '/#a-paroquia' },
-        { label: 'Pastorais e Movimentos', href: '/#pastorais' },
-        { label: 'Comunidades', href: '/#contato' },
+        { label: 'Nossa História', href: '/historia' },
+        { label: 'Comunidades', href: '/comunidades' },
       ],
     },
     {
@@ -684,7 +1323,7 @@ export const footer = {
         { label: 'Notícias e Avisos', href: '/noticias' },
         { label: 'Sacramentos', href: '/#sacramentos' },
         { label: 'Dízimo', href: '/#dizimo' },
-        { label: 'Pedido de Oração', href: '/#contato' },
+        { label: 'Pedido de Oração', href: '/pedido-de-oracoes' },
       ],
     },
   ],

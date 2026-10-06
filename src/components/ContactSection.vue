@@ -133,7 +133,10 @@ function submit() {
             <h3 class="contact-sub contact-sub--gold">{{ contact.communities_title }}</h3>
             <ul class="comm-notes">
               <li v-for="c in contact.communities" :key="c.name">
-                <strong>{{ c.name }}:</strong> {{ c.note }}
+                <RouterLink class="comm-link" :to="`/comunidades#${c.slug}`">
+                  <strong>{{ c.name }}:</strong>
+                </RouterLink>
+                {{ c.note }}
               </li>
             </ul>
           </div>
@@ -277,6 +280,18 @@ function submit() {
   padding-left: 18px;
   color: var(--parish-muted);
   line-height: 1.55;
+}
+
+.comm-link {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.comm-link:hover,
+.comm-link:focus-visible {
+  color: var(--parish-gold);
+  outline: none;
 }
 
 .comm-notes strong {
