@@ -8,7 +8,10 @@
   --parish-muted: #5c6570;
   --parish-card-border: rgba(27, 42, 74, 0.08);
   --parish-shadow: 0 8px 28px rgba(27, 42, 74, 0.08);
-  --navbar-height: 72px;
+  --preheader-height: 38px;
+  --navbar-main-pad-top: 8px;
+  --navbar-main-height: 64px;
+  --navbar-height: calc(var(--preheader-height) + var(--navbar-main-pad-top) + var(--navbar-main-height));
   --container-max: 1160px;
   --section-pad: 80px;
   --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
@@ -25,6 +28,64 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 100%;
+}
+
+html[data-font-scale='115'] {
+  font-size: 115%;
+}
+
+html[data-font-scale='130'] {
+  font-size: 130%;
+}
+
+/* Alto contraste */
+html.a11y-contrast {
+  --parish-navy: #000000;
+  --parish-maroon: #000000;
+  --parish-gold: #ffd700;
+  --parish-cream: #ffffff;
+  --parish-cream-deep: #ffffff;
+  --parish-ink: #000000;
+  --parish-muted: #1a1a1a;
+  --parish-card-border: #000000;
+  --parish-shadow: none;
+}
+
+html.a11y-contrast body,
+html.a11y-contrast .v-application {
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+html.a11y-contrast a,
+html.a11y-contrast button {
+  text-decoration-thickness: 2px;
+}
+
+html.a11y-contrast .navbar,
+html.a11y-contrast .navbar-main,
+html.a11y-contrast .a11y-panel,
+html.a11y-contrast .mobile-menu {
+  background: #ffffff !important;
+  border-color: #000000 !important;
+}
+
+html.a11y-contrast .preheader {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+html.a11y-contrast .card-surface,
+html.a11y-contrast .search-dialog {
+  border: 2px solid #000000 !important;
+  box-shadow: none !important;
+}
+
+/* Sublinhado em links */
+html.a11y-underline-links a:not(.app-logo):not(.preheader-icon):not(.btn-primary):not(.v-btn) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 body {
@@ -201,6 +262,8 @@ a {
 @media (max-width: 800px) {
   :root {
     --section-pad: 56px;
+    --navbar-main-pad-top: 6px;
+    --navbar-main-height: 48px;
   }
 
   .container {

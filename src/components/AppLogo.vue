@@ -17,7 +17,7 @@ defineProps({
       :alt="site.name"
       class="app-logo__img"
       width="280"
-      height="72"
+      height="80"
       decoding="async"
     >
   </RouterLink>
@@ -36,19 +36,19 @@ defineProps({
   display: block;
   width: auto;
   height: 64px;
-  max-width: min(320px, 62vw);
+  max-width: min(300px, 54vw);
   object-fit: contain;
 }
 
 .app-logo--footer .app-logo__img {
-  height: 40px;
-  max-width: min(220px, 70vw);
+  height: 48px;
+  max-width: min(240px, 70vw);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 800px) {
   .app-logo--nav .app-logo__img {
-    height: 48px;
-    max-width: min(220px, 54vw);
+    height: 46px;
+    max-width: min(180px, 46vw);
   }
 }
 </style>

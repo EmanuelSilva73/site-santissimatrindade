@@ -1,101 +1,46 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
-import { getNewsBySlug, getRecentNews } from '../data/site'
+import { getNewsBySlug, getRecentNews, site } from '../data/site'
+import PageHeader from '../components/PageHeader.vue'
 
 const route = useRoute()
 const article = computed(() => getNewsBySlug(route.params.slug))
 const recent = computed(() => getRecentNews(route.params.slug, 5))
 
-const snackbar = ref(false)
-const snackMsg = ref('')
+const breadcrumbs = computed(() => [
+  { label: 'Início', to: '/' },
+  { label: 'Notícias', to: '/noticias' },
+  { label: article.value?.title || '' },
+])
 
-function articleUrl() {
-  if (typeof window === 'undefined') return ''
-  return window.location.href
-}
-
-async function shareArticle() {
-  const url = articleUrl()
-  const title = article.value?.title || 'Notícia'
-  const text = article.value?.excerpt || ''
-
-  if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
-    try {
-      await navigator.share({ title, text, url })
-      return
-    } catch (err) {
-      if (err && err.name === 'AbortError') return
-    }
-  }
-
-  try {
-    await navigator.clipboard.writeText(url)
-    snackMsg.value = 'Link da notícia copiado.'
-  } catch {
-    snackMsg.value = 'Não foi possível compartilhar. Copie o endereço da barra do navegador.'
-  }
-  snackbar.value = true
-}
+watchEffect(() => {
+  if (typeof document === 'undefined') return
+  document.title = article.value
+    ? `${article.value.title} | ${site.name}`
+    : `Notícia Não Encontrada | ${site.name}`
+})
 </script>
 
 <template>
   <section class="article-page">
     <div class="container">
       <template v-if="article">
-        <div class="article-actions">
-          <v-btn
-            class="action-btn"
-            variant="text"
-            :to="'/noticias'"
-            prepend-icon="mdi-arrow-left"
-          >
-            Voltar
-          </v-btn>
-          <v-btn
-            class="action-btn"
-            variant="text"
-            prepend-icon="mdi-share-variant"
-            type="button"
-            @click="shareArticle"
-          >
-            Compartilhar
-          </v-btn>
-        </div>
-
-        <header class="article-header">
-          <div class="article-header__copy">
-            <h1 class="article-title">{{ article.title }}</h1>
-            <p class="article-excerpt">{{ article.excerpt }}</p>
-            <p class="article-meta">
-              <time>{{ article.time }} · {{ article.date }}</time>
-              <span aria-hidden="true"> · </span>
-              <span>Por {{ article.author }}</span>
-            </p>
-            <nav class="breadcrumb" aria-label="Navegação estrutural">
-              <RouterLink to="/">Início</RouterLink>
-              <span aria-hidden="true">/</span>
-              <RouterLink to="/noticias">Notícias</RouterLink>
-              <span aria-hidden="true">/</span>
-              <span>{{ article.title }}</span>
-            </nav>
-          </div>
-
-          <div class="header-hero-wrap">
-            <div
-              class="header-hero"
-              role="img"
-              aria-label="Ilustração padrão de notícia"
-            >
-              <v-icon
-                icon="mdi-newspaper-variant-outline"
-                size="108"
-                class="header-hero__icon"
-                aria-hidden="true"
-              />
-            </div>
-          </div>
-        </header>
+        <PageHeader
+          :title="article.title"
+          :excerpt="article.excerpt"
+          :breadcrumbs="breadcrumbs"
+          back-to="/noticias"
+          share-copied-message="Link da notícia copiado."
+          hero-icon="mdi-newspaper-variant-outline"
+          hero-label="Ilustração padrão de notícia"
+        >
+          <template #meta>
+            <time>{{ article.time }} · {{ article.date }}</time>
+            <span aria-hidden="true"> · </span>
+            <span>Por {{ article.author }}</span>
+          </template>
+        </PageHeader>
 
         <div class="article-layout">
           <article class="article-main">
@@ -163,10 +108,6 @@ async function shareArticle() {
         </div>
       </template>
     </div>
-
-    <v-snackbar v-model="snackbar" :timeout="2800" color="primary" location="bottom">
-      {{ snackMsg }}
-    </v-snackbar>
   </section>
 </template>
 
@@ -197,87 +138,6 @@ async function shareArticle() {
 .action-btn.v-btn:focus-visible {
   color: var(--parish-navy) !important;
   background: rgba(122, 36, 48, 0.06) !important;
-}
-
-.article-header {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 260px;
-  gap: 24px 20px;
-  align-items: center;
-  margin-bottom: 28px;
-}
-
-.header-hero-wrap {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.article-header__copy {
-  min-width: 0;
-}
-
-.article-title {
-  margin: 0 0 12px;
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 4vw, 2.75rem);
-  font-weight: 600;
-  color: var(--parish-navy);
-  line-height: 1.15;
-}
-
-.article-meta {
-  margin: 0 0 10px;
-  font-size: 0.95rem;
-  color: var(--parish-muted);
-  line-height: 1.45;
-}
-
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0;
-  font-size: 0.9rem;
-  color: var(--parish-muted);
-}
-
-.breadcrumb a {
-  color: var(--parish-gold);
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.breadcrumb a:hover,
-.breadcrumb a:focus-visible {
-  color: var(--parish-maroon);
-  outline: none;
-}
-
-.article-excerpt {
-  margin: 0 0 12px;
-  font-size: 1.15rem;
-  line-height: 1.55;
-  color: var(--parish-muted);
-}
-
-.header-hero {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 148px;
-  height: 148px;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #f3ebe0 0%, #e8dcc8 55%, #ddcfb6 100%);
-  box-shadow: inset 0 0 0 1px rgba(27, 42, 74, 0.06);
-  flex-shrink: 0;
-}
-
-.header-hero__icon {
-  color: var(--parish-navy) !important;
-  opacity: 0.85;
 }
 
 .article-layout {
@@ -387,17 +247,6 @@ async function shareArticle() {
 }
 
 @media (max-width: 960px) {
-  .article-header {
-    grid-template-columns: 1fr;
-    justify-items: start;
-  }
-
-  .header-hero {
-    width: 132px;
-    height: 132px;
-    order: -1;
-  }
-
   .article-layout {
     grid-template-columns: 1fr;
     gap: 28px;

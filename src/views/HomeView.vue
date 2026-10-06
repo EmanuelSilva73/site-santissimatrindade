@@ -6,7 +6,6 @@ import MassesSection from '../components/MassesSection.vue'
 import SacramentsSection from '../components/SacramentsSection.vue'
 import CelebrationsSection from '../components/CelebrationsSection.vue'
 import HistorySection from '../components/HistorySection.vue'
-import PastoraisSection from '../components/PastoraisSection.vue'
 import ContactSection from '../components/ContactSection.vue'
 </script>
 
@@ -18,6 +17,5 @@ import ContactSection from '../components/ContactSection.vue'
   <SacramentsSection />
   <CelebrationsSection />
   <HistorySection />
-  <PastoraisSection />
   <ContactSection />
 </template>
